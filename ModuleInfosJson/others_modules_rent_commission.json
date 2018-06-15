@@ -8,12 +8,12 @@
   "req_core_version":	3.0,
   "license":			"GPL 2 - MIT",
   "tag":			    "ren commission",
-  "install":            "includes/Module",
+  "install":            "includes/Module/Hooks",
   "module_directory":   "Module",
   "apps_name":          "",
   "type_module":      "Fixe",
   "dependance":       "Order App",
-  "description":        "This module allow you to now your rent commission on a sell",
+  "description":        "This module allow you to now your rent commission on a sell and display a dashboard on admin page",
   "image":            "",
 
   "authors": [
