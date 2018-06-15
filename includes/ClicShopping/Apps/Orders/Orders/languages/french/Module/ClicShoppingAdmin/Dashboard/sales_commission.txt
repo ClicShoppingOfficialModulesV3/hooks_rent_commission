@@ -1,0 +1,3 @@
+module_admin_dashboard_sales_commission_app_title = Commission sur vente à payer
+module_admin_dashboard_sales_commission_app_description = Affiche les commissions à payer par le client
+module_admin_dashboard_sales_commission_app_chart_link = Commission sur vente à payer

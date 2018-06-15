@@ -1,0 +1,3 @@
+module_admin_dashboard_sales_commission_app_title = Sales commissions to paid
+module_admin_dashboard_sales_commission_app_description = Display the commission to paid by the customers
+module_admin_dashboard_sales_commission_app_chart_link = Sales commissions to paid
