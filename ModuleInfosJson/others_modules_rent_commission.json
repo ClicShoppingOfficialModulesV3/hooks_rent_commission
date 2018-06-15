@@ -1,6 +1,6 @@
 {
   "title":			"others_modules_rent_commission",
-  "type":           "others_modules",
+  "type":           "hooks",
   "vendor":			"ClicShopping",
   "is_free":   "Yes",
   "website_link_to_sell" : "",
