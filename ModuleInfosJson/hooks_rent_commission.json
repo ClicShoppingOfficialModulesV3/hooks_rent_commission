@@ -1,10 +1,10 @@
 {
-  "title":			"others_modules_rent_commission",
+  "title":			"hooks_rent_commission",
   "type":           "hooks",
   "vendor":			"Module",
   "is_free":   "Yes",
   "website_link_to_sell" : "",
-  "version":			1.0,
+  "version":			"1.0.1",
   "req_core_version":	3.0,
   "license":			"GPL 2 - MIT",
   "tag":			    "ren commission",
