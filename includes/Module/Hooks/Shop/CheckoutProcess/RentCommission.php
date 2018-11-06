@@ -18,7 +18,7 @@
       $CLICSHOPPING_Customer = Registry::get('Customer');
 
       if (!$CLICSHOPPING_Customer->isLoggedOn()) {
-        CLICSHOPPING::redirect('CLICSHOPPING::link(null, 'Account&LogIn');
+        CLICSHOPPING::redirect(null, 'Account&LogIn');
       }
 
       $this->commission = 0.02;
