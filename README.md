@@ -9,7 +9,7 @@ No activation needed
 Important Note
 The module is in relation with Order APP
 
-All informations about the CliCshopping
+All informations about the ClicShopping
 
  Community : https://www.clicshopping.org
 
