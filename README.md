@@ -5,6 +5,7 @@ The commission is calculated when the customer take an order (check process).
 A dashboard could be displayed on ClicShopping Admin page
 No activation needed
 
+- License GPL2 - MIT
 
 Important Note
 The module is in relation with Order APP
