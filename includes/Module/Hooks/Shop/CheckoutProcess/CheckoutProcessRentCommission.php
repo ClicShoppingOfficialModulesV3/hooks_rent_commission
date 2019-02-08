@@ -14,7 +14,7 @@
   use ClicShopping\OM\Registry;
   use ClicShopping\OM\CLICSHOPPING;
 
-  class RentCommission {
+  class CheckoutProcessRentCommission {
 
     public function __construct() {
       $CLICSHOPPING_Customer = Registry::get('Customer');
@@ -30,10 +30,10 @@
       $CLICSHOPPING_Db = Registry::get('Db');
 
       $QRentCommission = $CLICSHOPPING_Db->prepare('select orders_id 
-                                              from :table_orders
-                                              order by orders_id desc
-                                              limit 1
-                                             ');
+                                                    from :table_orders
+                                                    order by orders_id desc
+                                                    limit 1
+                                                   ');
 
       $QRentCommission->execute();
       $orders_id =  $QRentCommission->valueInt('orders_id');
@@ -44,15 +44,15 @@
     public static function RentCommission() {
       $CLICSHOPPING_Db = Registry::get('Db');
 
-      $QRentCommission = $CLICSHOPPING_Db->prepare("select distinct ot.orders_id, 
-                                                             ot.value,
-                                                             ot.class
-                                              from :table_orders_total ot,
-                                                    :table_orders_status_history ost
-                                              where ot.orders_id = ost.orders_id
-                                              and (ot.class = :class or ot.class = :class1)
-                                              and ot.orders_id = :orders_id
-                                            ");
+      $QRentCommission = $CLICSHOPPING_Db->prepare('select distinct ot.orders_id, 
+                                                                     ot.value,
+                                                                     ot.class
+                                                      from :table_orders_total ot,
+                                                            :table_orders_status_history ost
+                                                      where ot.orders_id = ost.orders_id
+                                                      and (ot.class = :class or ot.class = :class1)
+                                                      and ot.orders_id = :orders_id
+                                                    ');
 
       $QRentCommission->bindValue(':class', 'ot_subtotal');
       $QRentCommission->bindValue(':class1', 'ST');
