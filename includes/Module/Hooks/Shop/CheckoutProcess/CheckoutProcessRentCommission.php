@@ -29,7 +29,7 @@
     private static function LastOrderId() {
       $CLICSHOPPING_Db = Registry::get('Db');
 
-      $QRentCommission = $CLICSHOPPING_Db->prepare('select orders_id 
+      $QRentCommission = $CLICSHOPPING_Db->prepare('select orders_id
                                                     from :table_orders
                                                     order by orders_id desc
                                                     limit 1
@@ -44,15 +44,15 @@
     public static function RentCommission() {
       $CLICSHOPPING_Db = Registry::get('Db');
 
-      $QRentCommission = $CLICSHOPPING_Db->prepare('select distinct ot.orders_id, 
-                                                                     ot.value,
-                                                                     ot.class
-                                                      from :table_orders_total ot,
-                                                            :table_orders_status_history ost
-                                                      where ot.orders_id = ost.orders_id
-                                                      and (ot.class = :class or ot.class = :class1)
-                                                      and ot.orders_id = :orders_id
-                                                    ');
+      $QRentCommission = $CLICSHOPPING_Db->prepare('select distinct ot.orders_id,
+                                                                   ot.value,
+                                                                   ot.class
+                                                    from :table_orders_total ot,
+                                                          :table_orders_status_history ost
+                                                    where ot.orders_id = ost.orders_id
+                                                    and (ot.class = :class or ot.class = :class1)
+                                                    and ot.orders_id = :orders_id
+                                                  ');
 
       $QRentCommission->bindValue(':class', 'ot_subtotal');
       $QRentCommission->bindValue(':class1', 'ST');
@@ -68,18 +68,19 @@
     public function execute() {
       $CLICSHOPPING_Db = Registry::get('Db');
 
-      $Qcheck = $CLICSHOPPING_Db->query('show tables like ":table_orders_sales_commission"');
+      if (isset($_GET['Checkout']) && isset($_GET['Process'])) {
+        $Qcheck = $CLICSHOPPING_Db->query('show tables like ":table_orders_sales_commission"');
 
-      if ($Qcheck->fetch() !== false) {
-        $commission = $this->commission * static::RentCommission();
+        if ($Qcheck->fetch() !== false) {
+          $commission = $this->commission * static::RentCommission();
 
-        $sql_data_array = ['orders_id' => (int)static::LastOrderId(),
-                           'value' => (float)$commission,
-                           'date' => 'now()'
-                          ];
+          $sql_data_array = ['orders_id' => (int)static::LastOrderId(),
+                             'value' => (float)$commission,
+                             'date' => 'now()'
+                            ];
 
-        $CLICSHOPPING_Db->save('orders_sales_commission', $sql_data_array);
-
+          $CLICSHOPPING_Db->save('orders_sales_commission', $sql_data_array);
+        }
       }
     }
   }
