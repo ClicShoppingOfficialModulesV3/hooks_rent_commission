@@ -1,22 +1,24 @@
 <?php
   /**
- *
- *  @copyright 2008 - https://www.clicshopping.org
- *  @Brand : ClicShopping(Tm) at Inpi all right Reserved
- *  @Licence GPL 2 & MIT
- *  @licence MIT - Portion of osCommerce 2.4
- *  @Info : https://www.clicshopping.org/forum/trademark/
- *
- */
+   *
+   * @copyright 2008 - https://www.clicshopping.org
+   * @Brand : ClicShopping(Tm) at Inpi all right Reserved
+   * @Licence GPL 2 & MIT
+   * @licence MIT - Portion of osCommerce 2.4
+   * @Info : https://www.clicshopping.org/forum/trademark/
+   *
+   */
 
   namespace ClicShopping\OM\Module\Hooks\Shop\CheckoutProcess;
 
   use ClicShopping\OM\Registry;
   use ClicShopping\OM\CLICSHOPPING;
 
-  class CheckoutProcessRentCommission {
+  class CheckoutProcessRentCommission
+  {
 
-    public function __construct() {
+    public function __construct()
+    {
       $CLICSHOPPING_Customer = Registry::get('Customer');
 
       if (!$CLICSHOPPING_Customer->isLoggedOn()) {
@@ -26,7 +28,8 @@
       $this->commission = 0.02;
     }
 
-    private static function LastOrderId() {
+    private static function LastOrderId()
+    {
       $CLICSHOPPING_Db = Registry::get('Db');
 
       $QRentCommission = $CLICSHOPPING_Db->prepare('select orders_id
@@ -36,12 +39,13 @@
                                                    ');
 
       $QRentCommission->execute();
-      $orders_id =  $QRentCommission->valueInt('orders_id');
+      $orders_id = $QRentCommission->valueInt('orders_id');
 
       return $orders_id;
     }
 
-    public static function RentCommission() {
+    public static function RentCommission()
+    {
       $CLICSHOPPING_Db = Registry::get('Db');
 
       $QRentCommission = $CLICSHOPPING_Db->prepare('select distinct ot.orders_id,
@@ -65,7 +69,8 @@
       return $rent_commission;
     }
 
-    public function execute() {
+    public function execute()
+    {
       $CLICSHOPPING_Db = Registry::get('Db');
 
       if (isset($_GET['Checkout']) && isset($_GET['Process'])) {
@@ -75,9 +80,9 @@
           $commission = $this->commission * static::RentCommission();
 
           $sql_data_array = ['orders_id' => (int)static::LastOrderId(),
-                             'value' => (float)$commission,
-                             'date' => 'now()'
-                            ];
+            'value' => (float)$commission,
+            'date' => 'now()'
+          ];
 
           $CLICSHOPPING_Db->save('orders_sales_commission', $sql_data_array);
         }
