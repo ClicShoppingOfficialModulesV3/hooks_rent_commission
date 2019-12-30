@@ -189,7 +189,7 @@ EOD;
                                                 value decimal(15,4) NOT NULL,
                                                 date datetime DEFAULT NULL
                                                 )
-   CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
    ALTER TABLE :table_orders_sales_commission  ADD UNIQUE KEY orders_id (orders_id);
 EOD;
 
