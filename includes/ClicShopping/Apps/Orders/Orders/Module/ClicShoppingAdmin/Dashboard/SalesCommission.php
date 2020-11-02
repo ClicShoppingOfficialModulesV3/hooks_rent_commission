@@ -13,18 +13,18 @@
 
   use ClicShopping\OM\HTML;
   use ClicShopping\OM\Registry;
+  use ClicShopping\OM\DateTime;
 
   use ClicShopping\Apps\Orders\Orders\Orders as OrdersApp;
 
   class SalesCommission extends \ClicShopping\OM\Modules\AdminDashboardAbstract
   {
-
     protected $lang;
     protected $app;
+    public $group;
 
     protected function init()
     {
-
       if (!Registry::exists('Orders')) {
         Registry::set('Orders', new OrdersApp());
       }
@@ -52,8 +52,8 @@
       }
 
       $Qorder = $this->app->db->prepare('select date,
-                                        date_format(date, "%m") as displaymonth,
-                                        date_format(date, "%Y-%m-%d") as month,
+                                                date_format(date, "%m") as displaymonth,
+                                                date_format(date, "%Y-%m-%d") as month,
                                                sum(value) as total
                                         from :table_orders_sales_commission
                                         where date_sub(now(), interval 12 month) <= date
@@ -69,15 +69,21 @@
       $month = array_reverse($month, true);
 
       $js_array = '';
+      $result = '';
+
       foreach ($month as $date => $total) {
-        $js_array .= '[' . (mktime(0, 0, 0, substr($date, 5, 2), substr($date, 8, 2), substr($date, 0, 4)) * 1000) . ', ' . $total . '],';
+        if ($total > 0) {
+          $result .= '<div class="row">';
+          $result .= '<div class="col-md-12">';
+          $result .= '<span class="col-md-4">' . DateTime::toShort($date) . '</span>';
+          $result .= '<span class="col-md-4">' . $total . '</span>';
+          $result .= '<span class="col-md-4">' . HTML::button('pay', null, 'https://www.paypal.fr', 'danger', ['params' => 'target="_blank" rel="noreferrer"'], 'sm') . '</span>';
+          $result .= '</div>';
+          $result .= '<div class"separator"></div>';
+          $result .= '</div>';
+        }
       }
 
-      if (!empty($js_array)) {
-        $js_array = substr($js_array, 0, -1);
-      }
-
-      $chart_label_link = '';
       $chart_title = HTML::output($this->app->getDef('module_admin_dashboard_sales_commission_app_chart_link'));
 
       $content_width = 'col-md-' . (int)MODULE_ADMIN_DASHBOARD_SALES_COMMISSION_APP_CONTENT_WIDTH;
@@ -88,90 +94,13 @@
     <div class="card">
       <div class="card-body">
         <h6 class="card-title"><i class="fa fa-coins"></i> {$chart_title}</h6>
-        <p class="card-text"><div id="d_sales_commission" class="col-md-12" style="width:100%; height: 200px;"></div></p>
+        <div class="card-text">
+          <div id="d_sales_commission" class="col-md-12" style="width:100%; height: 200px;">{$result}</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-<script type="text/javascript">
-$(function () {
-  var plot30 = [$js_array];
-  $.plot($('#d_sales_commission'), [ {
-    label: '',
-    data: plot30,
-    bars: {
-      show: true,
-      fill: true,
-      lineWidth: 20,
-      barWidth: 20,
-      align:  "center"
-      },
-      points: { show: true },
-      color: '#efbef6'
-    }], {
-
-    xaxis: {
-      ticks: 4,
-      mode: 'time'
-    },
-
-    yaxis: {
-      ticks: 5,
-      min: 0
-    },
-
-    grid: {
-      backgroundColor: { colors:  ['#FAFAFA', '#FAFAFA'] }, //gradient ['#d3d3d3', '#fff']
-      hoverable: true,
-      borderWidth: 1
-    },
-
-    legend: {
-      labelFormatter: function(label, series) {
-        return '<a href="$chart_label_link">' + label + '</a>';
-      }
-    }
-  });
-});
-
-function showTooltip(x, y, contents) {
-  $('<div id="tooltip">' + contents + '</div>').css( {
-    position: 'absolute',
-    display: 'none',
-    top: y + 5,
-    left: x + 5,
-    border: '1px solid #fdd',
-    padding: '2px',
-    backgroundColor: '#fee',
-    opacity: 0.80
-  }).appendTo('body').fadeIn(200);
-}
-
-var monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
-
-var previousPoint = null;
-$('#d_sales_commission').bind('plothover', function (event, pos, item) {
-  if (item) {
-    if (previousPoint != item.datapoint) {
-      previousPoint = item.datapoint;
-
-      $('#tooltip').remove();
-      var x = item.datapoint[0],
-          y = item.datapoint[1],
-          xdate = new Date(x);
-
-      showTooltip(item.pageX, item.pageY, y + ' for ' + monthNames[xdate.getMonth()] + '-' + xdate.getDate());
-    }
-  } else {
-    $('#tooltip').remove();
-    previousPoint = null;
-  }
-});
-
-
-
-</script>
 EOD;
 
       return $output;
@@ -216,7 +145,7 @@ EOD;
       $this->app->db->save('configuration', [
           'configuration_title' => 'Select the width to display',
           'configuration_key' => 'MODULE_ADMIN_DASHBOARD_SALES_COMMISSION_APP_CONTENT_WIDTH',
-          'configuration_value' => '12',
+          'configuration_value' => '6',
           'configuration_description' => 'Select a number between 1 to 12',
           'configuration_group_id' => '6',
           'sort_order' => '1',
