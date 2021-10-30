@@ -73,7 +73,7 @@
     {
       $CLICSHOPPING_Db = Registry::get('Db');
 
-      if (isset($_GET['Checkout']) && isset($_GET['Process'])) {
+      if (isset($_GET['Checkout'], $_GET['Process'])) {
         $Qcheck = $CLICSHOPPING_Db->query('show tables like ":table_orders_sales_commission"');
 
         if ($Qcheck->fetch() !== false) {

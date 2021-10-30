@@ -19,8 +19,8 @@
 
   class SalesCommission extends \ClicShopping\OM\Modules\AdminDashboardAbstract
   {
-    protected $lang;
-    protected $app;
+    protected mixed $lang;
+    protected mixed $app;
     public $group;
 
     protected function init()
