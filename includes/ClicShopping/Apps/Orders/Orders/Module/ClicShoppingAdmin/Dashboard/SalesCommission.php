@@ -90,10 +90,11 @@
 
       $output = <<<EOD
 <div class="{$content_width}">
-  <div class="card-deck mb-3">
-    <div class="card">
+  <div class="card mb-3">
+    <div class="card"
+>
       <div class="card-body">
-        <h6 class="card-title"><i class="fa fa-coins"></i> {$chart_title}</h6>
+        <h6 class="card-title"><i class="bi bi-graph-up"></i> {$chart_title}</h6>
         <div class="card-text">
           <div id="d_sales_commission" class="col-md-12" style="width:100%; height: 200px;">{$result}</div>
         </div>
